@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}OTP Verification{% endblock %}
+
+{% block extra_css %}
+<style>
+    .otp-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .otp-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        overflow: hidden;
+        max-width: 450px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .otp-header {
+        padding: 40px 40px 20px;
+    }
+    
+    .otp-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 2.5rem;
+    }
+    
+    .otp-header h2 {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .otp-header p {
+        color: #7f8c8d;
+        margin: 0;
+    }
+    
+    .email-display {
+        background: #f8f9fa;
+        padding: 10px 20px;
+        border-radius: 8px;
+        color: #11998e;
+        font-weight: 600;
+        margin: 20px 0;
+    }
+    
+    .otp-body {
+        padding: 20px 40px 40px;
+    }
+    
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 8px;
+    }
+    
+    .form-control:focus {
+        border-color: #11998e;
+        box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.25);
+    }
+    
+    .btn-verify {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 8px;
+        width: 100%;
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-verify:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(17, 153, 142, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="otp-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="otp-card">
+                    <div class="otp-header">
+                        <div class="otp-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h2>OTP VERIFICATION</h2>
+                        <p>Please enter the OTP sent to</p>
+                        <div class="email-display">{{ email }}</div>
+                    </div>
+                    
+                    <div class="otp-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4">
+                                {{ form.otp }}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-verify">VERIFY OTP</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}  

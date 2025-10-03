@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Students - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+    }    .search-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        margin-bottom: 2rem;
+    }    .student-card {
+        background: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: all 0.3s;
+    }    .student-card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }    .student-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2><i class="fas fa-users me-2"></i>All Registered Students</h2>
+                    <p class="mb-0">Total Students: {{ students.count }}</p>
+                </div>
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>    <!-- Search Box -->
+    <div class="search-box">
+        <form method="get" action="">
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text" name="search" class="form-control" 
+                           placeholder="Search by name, email, mobile, or course..." 
+                           value="{{ search_query }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>    <!-- Students List -->
+    <div class="row">
+        {% for student in students %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="student-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="student-avatar me-3">
+                        {{ student.name|first|upper }}
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="mb-0">{{ student.name }}</h5>
+                        <small class="text-muted">{{ student.email }}</small>
+                    </div>
+                </div>                <div class="mb-2">
+                    <i class="fas fa-graduation-cap text-primary me-2"></i>
+                    <strong>Course:</strong> {{ student.course }}
+                </div>                <div class="mb-2">
+                    <i class="fas fa-phone text-success me-2"></i>
+                    <strong>Mobile:</strong> {{ student.mobile }}
+                </div>                <div class="mb-2">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <strong>Location:</strong> {{ student.city }}, {{ student.state }}
+                </div>                <div class="mb-3">
+                    <i class="far fa-calendar-alt text-info me-2"></i>
+                    <strong>Registered:</strong> {{ student.created_at|date:"d M Y" }}
+                </div>                <a href="{% url 'admin_student_detail' student.id %}" class="btn btn-primary w-100">
+                    <i class="fas fa-eye me-2"></i>View Full Details
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-user-slash fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">No students found</h4>
+                {% if search_query %}
+                <p>Try a different search term</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

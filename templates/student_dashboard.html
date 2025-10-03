@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard - Career4s{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        overflow-x: hidden;
+    }
+    
+    .dashboard-hero {
+        background: #ED651C;
+        background: linear-gradient(135deg, #ED651C, #F4800C);
+        padding: 100px 0;
+        position: relative;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .dashboard-hero::before {
+        content: '';
+        position: absolute;
+        top: 263px;
+        right: -126px;
+        width: 438px;
+        height: 393px;
+        background: #DDA25B;
+        background: linear-gradient(135deg, #DDA25B, #EA8405);
+        background-image: url("{% static 'img/main_img.png' %}");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .dashboard-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -100px;
+        left: -100px;
+        width: 350px;
+        height: 350px;
+        background: rgba(46, 204, 113, 0.08);
+        border-radius: 50%;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    }
+    
+    .dashboard-hero h1 {
+        color: #fff;
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .dashboard-hero p {
+        color: rgba(255,255,255,0.9);
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+    
+    .user-info {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 15px 25px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: inline-block;
+    }
+    
+    .user-info p {
+        margin: 0;
+        color: #fff;
+        font-weight: 600;
+    }
+    
+    .dashboard-section {
+        padding: 80px 0;
+        background: #f8f9fa;
+        position: relative;
+    }
+    
+    .dashboard-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 40px 25px;
+        text-align: center;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-top: 4px solid transparent;
+        margin-bottom: 30px;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        min-height: 320px;
+    }
+    
+    .dashboard-card:nth-child(1) { border-top-color: #f39c12; }
+    .dashboard-card:nth-child(2) { border-top-color: #e74c3c; }
+    .dashboard-card:nth-child(3) { border-top-color: #f39c12; }
+    .dashboard-card:nth-child(4) { border-top-color: #2ecc71; }
+    .dashboard-card:nth-child(5) { border-top-color: #9b59b6; }
+    
+    .dashboard-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .card-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 20px;
+        transition: transform 0.3s ease;
+    }
+    
+    .card-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    
+    .dashboard-card:hover .card-icon {
+        transform: scale(1.05);
+    }
+    
+    .dashboard-card h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+    
+    .dashboard-card p {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    
+    /* Better spacing between cards */
+    .row.g-4 {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 2rem;
+    }
+    
+    @media (max-width: 991px) {
+        .dashboard-hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .dashboard-section {
+            padding: 60px 0;
+        }
+        
+        .row.g-4 {
+            --bs-gutter-y: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .dashboard-hero {
+            padding: 80px 0;
+            min-height: 50vh;
+        }
+        
+        .dashboard-hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-hero p {
+            font-size: 1rem;
+        }
+        
+        .dashboard-card {
+            margin-bottom: 25px;
+            min-height: 280px;
+        }
+        
+        .dashboard-hero::before {
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            top: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dashboard Hero Section -->
+<section class="dashboard-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 text-center hero-content">
+                <div class="hero-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#fff">
+                        <path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>
+                    </svg>
+                </div>
+                <h1>Student Dashboard</h1>
+                <p>Expert Guidance for Your Educational Journey</p>
+                <div class="user-info">
+                    <p>Welcome, {{ user_registration.name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Cards Section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <!-- Card 1: Upload Documents -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <a href="#upload-documents" class="dashboard-card" data-section="documents">
+                    <div class="card-icon">
+                        <img src="{% static 'img/content.png' %}" alt="Upload Documents" class="img-fluid">
+                    </div>
+                    <h4>Upload Documents for Professional Counselling</h4>
+                    <p>Submit your academic documents and certificates for verification</p>
+                </a>
+            </div>
+
+            <!-- Card 2: Choice Filling -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <a href="#choice-filling" class="dashboard-card" data-section="choices">
+                    <div class="card-icon">
+                        <img src="{% static 'img/briefcase.png' %}" alt="Choice Filling" class="img-fluid">
+                    </div>
+                    <h4>Choice Filling Preference by Students</h4>
+                    <p>Select and prioritize your preferred colleges and courses</p>
+                </a>
+            </div>
+
+            <!-- Card 3: Counselling Status -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <a href="#counselling-status" class="dashboard-card" data-section="status">
+                    <div class="card-icon">
+                        <img src="{% static 'img/career.png' %}" alt="Counselling Status" class="img-fluid">
+                    </div>
+                    <h4>Student Counselling Process Status</h4>
+                    <p>Track your application and counselling progress in real-time</p>
+                </a>
+            </div>
+
+            <!-- Card 4: Doubt Sessions -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <a href="#doubt-sessions" class="dashboard-card" data-section="doubts">
+                    <div class="card-icon">
+                        <img src="{% static 'img/python.png' %}" alt="Doubt Sessions" class="img-fluid">
+                    </div>
+                    <h4>Doubt Sessions</h4>
+                    <p>Get your queries resolved by our expert counsellors</p>
+                </a>
+            </div>
+
+            <!-- Card 5: Complaint Desk -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <a href="#complaint-desk" class="dashboard-card" data-section="complaints">
+                    <div class="card-icon">
+                        <img src="{% static 'img/designer.png' %}" alt="Complaint Desk" class="img-fluid">
+                    </div>
+                    <h4>Career4s Complaint Desk</h4>
+                    <p>Register complaints and get prompt resolution</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Smooth scroll to sections on card click
+    document.querySelectorAll('.dashboard-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const section = this.getAttribute('data-section');
+            
+            // Redirect to main dashboard with section hash
+            window.location.href = "{% url 'professional_counselling_experts' %}#" + section;
+        });
+    });
+</script>
+{% endblock %}

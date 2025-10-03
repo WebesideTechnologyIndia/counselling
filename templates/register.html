@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}New Registration - Admission India{% endblock %}
+
+{% block extra_css %}
+<style>
+    .registration-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    
+    .registration-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .card-header-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        text-align: center;
+        color: #fff;
+    }
+    
+    .card-header-custom h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+    
+    .card-header-custom p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+    }
+    
+    .card-body-custom {
+        padding: 40px;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+    
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-register {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 8px;
+        width: 100%;
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .login-link a {
+        color: #667eea;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="registration-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="registration-card">
+                    <div class="card-header-custom">
+                        <h2>NEW REGISTRATION</h2>
+                        <p>ADMISSION INDIA - CLICK</p>
+                    </div>
+                    
+                    <div class="card-body-custom">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label class="form-label">NAME</label>
+                                {{ form.name }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">FATHER NAME</label>
+                                {{ form.father_name }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">MOBILE</label>
+                                {{ form.mobile }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">WHATSAPP MOBILE</label>
+                                {{ form.whatsapp_mobile }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">EMAIL</label>
+                                {{ form.email }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">COURSE</label>
+                                {{ form.course }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">STATE</label>
+                                {{ form.state }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">CITY</label>
+                                {{ form.city }}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-register">SUBMIT</button>
+                        </form>
+                        
+                        <div class="login-link">
+                            <p>Already have an account? <a href="{% url 'login_view' %}">LOGIN</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

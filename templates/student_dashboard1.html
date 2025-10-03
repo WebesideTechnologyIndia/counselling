@@ -1,0 +1,797 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard - Counselling Portal{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #858796;
+        --success-color: #1cc88a;
+        --danger-color: #e74a3b;
+        --warning-color: #f6c23e;
+        --info-color: #36b9cc;
+    }
+
+    .dashboard-container {
+        background-color: #f8f9fc;
+        min-height: 100vh;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .sidebar-dashboard {
+        background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+        border-radius: 0.5rem;
+        padding: 2rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        position: sticky;
+        top: 100px;
+    }
+
+    .sidebar-dashboard .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        padding: 1rem;
+        border-radius: 0.35rem;
+        margin: 0.2rem 0;
+        transition: all 0.3s;
+    }
+
+    .sidebar-dashboard .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transform: translateX(5px);
+    }
+
+    .sidebar-dashboard .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+
+    .sidebar-dashboard .nav-link i {
+        margin-right: 0.5rem;
+    }
+
+    .stat-card {
+        border-left: 4px solid;
+        border-radius: 0.35rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        transition: transform 0.3s;
+        background: white;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card.primary { border-left-color: var(--primary-color); }
+    .stat-card.success { border-left-color: var(--success-color); }
+    .stat-card.warning { border-left-color: var(--warning-color); }
+    .stat-card.danger { border-left-color: var(--danger-color); }
+    .stat-card.info { border-left-color: var(--info-color); }
+
+    .profile-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .notification-badge {
+        background-color: var(--danger-color);
+        color: white;
+        border-radius: 50%;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+    }
+
+    .status-badge {
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+
+    .status-pending { background-color: #fff3cd; color: #856404; }
+    .status-verified { background-color: #d4edda; color: #155724; }
+    .status-rejected { background-color: #f8d7da; color: #721c24; }
+
+    .notification-item {
+        border-left: 4px solid var(--info-color);
+        background-color: #fff;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.35rem;
+        transition: all 0.3s;
+    }
+
+    .notification-item:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transform: translateX(5px);
+    }
+
+    .notification-item.important { border-left-color: var(--danger-color); }
+    .notification-item.counselling { border-left-color: var(--warning-color); }
+    .notification-item.admission { border-left-color: var(--success-color); }
+
+    .document-card {
+        background: white;
+        border-radius: 0.35rem;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    }
+
+    .progress-custom {
+        height: 1.5rem;
+        border-radius: 1rem;
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container">
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="sidebar-dashboard">
+                    <div class="text-center mb-4">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-graduate fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="text-white">{{ user_registration.name }}</h5>
+                        <p class="text-white-50 small mb-0">{{ user_registration.email }}</p>
+                    </div>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#documents">
+                                <i class="fas fa-file-upload"></i> Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#choices">
+                                <i class="fas fa-list-ol"></i> Choice Filling
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#status">
+                                <i class="fas fa-tasks"></i> Application Status
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#doubts">
+                                <i class="fas fa-question-circle"></i> Doubts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#complaints">
+                                <i class="fas fa-exclamation-triangle"></i> Complaints
+                            </a>
+                        </li>
+                        <li class="nav-item">
+    <a class="nav-link" href="#notifications">
+        <i class="fas fa-bell"></i> Notifications
+        {% if notifications %}
+        <span class="notification-badge">{{ notifications|length }}</span>
+        {% endif %}
+    </a>
+</li>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{% url 'logout_view' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+                <!-- Profile Header -->
+                <div class="profile-header" id="dashboard">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2>Welcome back, {{ user_registration.name }}! 👋</h2>
+                            <p class="mb-0">Course: {{ user_registration.course }} | {{ user_registration.city }}, {{ user_registration.state }}</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <p class="mb-0"><i class="fas fa-phone me-2"></i>{{ user_registration.mobile }}</p>
+                            <p class="mb-0"><i class="fab fa-whatsapp me-2"></i>{{ user_registration.whatsapp_mobile }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card primary">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Documents</div>
+                                <div class="h5 mb-0 font-weight-bold">{{ stats.total_documents }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card success">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Verified Documents</div>
+                                <div class="h5 mb-0 font-weight-bold">{{ stats.verified_documents }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card warning">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Documents</div>
+                                <div class="h5 mb-0 font-weight-bold">{{ stats.pending_documents }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-3">
+                        <div class="card stat-card info">
+                            <div class="card-body">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">College Choices</div>
+                                <div class="h5 mb-0 font-weight-bold">{{ stats.total_choices }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Progress -->
+              <!-- Application Progress -->
+<div class="card mb-4" id="status">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Application Progress</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="font-weight-bold">Current Stage:</h6>
+                <p class="h4 text-primary mb-3">{{ status.current_stage }}</p>
+                
+                <div class="mt-4">
+                    <h6>Seat Allotment Status:</h6>
+                    {% if status.seat_allotment_status == 'Seat Allotted' %}
+                    <span class="status-badge status-verified">{{ status.seat_allotment_status }}</span>
+                    {% elif status.seat_allotment_status == 'Admission Confirmed' %}
+                    <span class="status-badge status-verified">{{ status.seat_allotment_status }}</span>
+                    {% elif status.seat_allotment_status == 'Waitlisted' %}
+                    <span class="status-badge status-pending">{{ status.seat_allotment_status }}</span>
+                    {% elif status.seat_allotment_status == 'Not Allotted' %}
+                    <span class="status-badge status-rejected">{{ status.seat_allotment_status }}</span>
+                    {% else %}
+                    <span class="status-badge status-pending">{{ status.seat_allotment_status }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Seat Allotment Details -->
+                {% if status.seat_allotment_status == 'Seat Allotted' or status.seat_allotment_status == 'Admission Confirmed' %}
+                <div class="alert alert-success mt-4">
+                    <h6 class="mb-2"><i class="fas fa-check-circle me-2"></i>Seat Allotment Details</h6>
+                    {% if status.allotted_college %}
+                    <p class="mb-1"><strong>College:</strong> {{ status.allotted_college }}</p>
+                    {% endif %}
+                    {% if status.allotted_course %}
+                    <p class="mb-1"><strong>Course:</strong> {{ status.allotted_course }}</p>
+                    {% endif %}
+                    {% if status.allotment_date %}
+                    <p class="mb-1"><strong>Allotment Date:</strong> {{ status.allotment_date|date:"d M Y" }}</p>
+                    {% endif %}
+                    {% if status.allotment_remarks %}
+                    <hr>
+                    <p class="mb-0"><small><strong>Remarks:</strong> {{ status.allotment_remarks }}</small></p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <p class="text-muted mt-3">
+                    <small><i class="far fa-clock me-1"></i>Last Updated: {{ status.updated_at|date:"d M Y, h:i A" }}</small>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <h6 class="font-weight-bold mb-3">Completion Checklist:</h6>
+                
+                <div class="mb-3">
+                    <span>
+                        {% if status.application_submitted %}
+                        <i class="fas fa-check-circle text-success fa-lg"></i>
+                        {% else %}
+                        <i class="far fa-circle text-muted fa-lg"></i>
+                        {% endif %}
+                        <strong class="ms-2">Application Submitted</strong>
+                    </span>
+                    {% if status.application_submitted %}
+                    <p class="ms-4 mb-0 text-muted small">Your application has been submitted successfully</p>
+                    {% else %}
+                    <p class="ms-4 mb-0 text-warning small">Please submit your application</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <span>
+                        {% if status.documents_verified %}
+                        <i class="fas fa-check-circle text-success fa-lg"></i>
+                        {% else %}
+                        <i class="far fa-circle text-muted fa-lg"></i>
+                        {% endif %}
+                        <strong class="ms-2">Documents Verified</strong>
+                    </span>
+                    {% if status.documents_verified %}
+                    <p class="ms-4 mb-0 text-muted small">All documents have been verified</p>
+                    {% else %}
+                    <p class="ms-4 mb-0 text-warning small">Document verification in progress</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <span>
+                        {% if status.choice_filling_completed %}
+                        <i class="fas fa-check-circle text-success fa-lg"></i>
+                        {% else %}
+                        <i class="far fa-circle text-muted fa-lg"></i>
+                        {% endif %}
+                        <strong class="ms-2">Choice Filling Completed</strong>
+                    </span>
+                    {% if status.choice_filling_completed %}
+                    <p class="ms-4 mb-0 text-muted small">Choice filling has been completed</p>
+                    {% else %}
+                    <p class="ms-4 mb-0 text-warning small">Please complete your college preferences</p>
+                    {% endif %}
+                </div>
+
+                <div class="progress progress-custom mt-4">
+                    <div class="progress-bar bg-success" style="width: {{ completion_percentage }}%" 
+                         role="progressbar" aria-valuenow="{{ completion_percentage }}" 
+                         aria-valuemin="0" aria-valuemax="100">
+                        {{ completed_tasks }} / 3 Completed ({{ completion_percentage|floatformat:0 }}%)
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="mt-4">
+                    <h6 class="font-weight-bold mb-2">Process Timeline:</h6>
+                    <small class="text-muted d-block">
+                        <i class="fas fa-arrow-right text-primary me-1"></i>
+                        Current: <strong>{{ status.current_stage }}</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <!-- Notifications Section -->
+                <div class="card mb-4" id="notifications">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Latest Notifications & Updates</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <div class="notification-item {{ notification.notification_type }}">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            {% if notification.notification_type == 'important' %}
+                                            <i class="fas fa-exclamation-circle text-danger"></i>
+                                            {% elif notification.notification_type == 'counselling' %}
+                                            <i class="fas fa-calendar-alt text-warning"></i>
+                                            {% elif notification.notification_type == 'admission' %}
+                                            <i class="fas fa-graduation-cap text-success"></i>
+                                            {% elif notification.notification_type == 'fees' %}
+                                            <i class="fas fa-rupee-sign text-primary"></i>
+                                            {% else %}
+                                            <i class="fas fa-info-circle text-info"></i>
+                                            {% endif %}
+                                            {{ notification.title }}
+                                        </h6>
+                                        <p class="mb-1">{{ notification.message }}</p>
+                                        
+                                        {% if notification.college_name %}
+                                        <p class="mb-0 text-primary"><strong>College:</strong> {{ notification.college_name }}</p>
+                                        {% endif %}
+                                        
+                                        {% if notification.fees_amount %}
+                                        <p class="mb-0 text-success"><strong>Fees:</strong> ₹{{ notification.fees_amount }}</p>
+                                        {% endif %}
+                                        
+                                        {% if notification.counselling_date %}
+                                        <p class="mb-0 text-warning"><strong>Date:</strong> {{ notification.counselling_date|date:"d M Y" }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">{{ notification.created_at|date:"d M Y" }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No notifications yet</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Documents Section -->
+                <div class="card mb-4" id="documents">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-file-upload me-2"></i>My Documents</h5>
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
+                            <i class="fas fa-plus"></i> Upload New
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        {% if documents %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Document Type</th>
+                                            <th>Uploaded Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for doc in documents %}
+                                        <tr>
+                                            <td><i class="fas fa-file-pdf text-danger me-2"></i>{{ doc.document_type }}</td>
+                                            <td>{{ doc.uploaded_at|date:"d M Y" }}</td>
+                                            <td>
+                                                {% if doc.status == 'verified' %}
+                                                <span class="status-badge status-verified">Verified</span>
+                                                {% elif doc.status == 'rejected' %}
+                                                <span class="status-badge status-rejected">Rejected</span>
+                                                {% else %}
+                                                <span class="status-badge status-pending">Pending</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ doc.document_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                                    <i class="fas fa-eye"></i> View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-file-upload fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No documents uploaded yet</p>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
+                                    Upload Your First Document
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Choice Filling Section -->
+                <div class="card mb-4" id="choices">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-list-ol me-2"></i>College Preferences</h5>
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addChoiceModal">
+                            <i class="fas fa-plus"></i> Add Choice
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        {% if choices %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Preference</th>
+                                            <th>College Name</th>
+                                            <th>Course Name</th>
+                                            <th>Added On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for choice in choices %}
+                                        <tr>
+                                            <td><span class="badge bg-primary">{{ choice.preference_number }}</span></td>
+                                            <td>{{ choice.college_name }}</td>
+                                            <td>{{ choice.course_name }}</td>
+                                            <td>{{ choice.created_at|date:"d M Y" }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-university fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No college preferences added yet</p>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addChoiceModal">
+                                    Add Your First Choice
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Doubts Section -->
+                <div class="card mb-4" id="doubts">
+                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>My Doubts</h5>
+                        <button class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#submitDoubtModal">
+                            <i class="fas fa-plus"></i> Ask Doubt
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        {% if doubts %}
+                            {% for doubt in doubts %}
+                            <div class="document-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-0">{{ doubt.subject }}</h6>
+                                    <span class="status-badge {% if doubt.status == 'resolved' %}status-verified{% else %}status-pending{% endif %}">
+                                        {{ doubt.status|title }}
+                                    </span>
+                                </div>
+                                <p class="text-muted mb-2">{{ doubt.doubt_description }}</p>
+                                {% if doubt.response %}
+                                <div class="alert alert-success mt-2">
+                                    <strong>Response:</strong> {{ doubt.response }}
+                                </div>
+                                {% endif %}
+                                <small class="text-muted">Asked on {{ doubt.created_at|date:"d M Y, h:i A" }}</small>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No doubts submitted yet</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Complaints Section -->
+                <div class="card mb-4" id="complaints">
+                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>My Complaints</h5>
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#submitComplaintModal">
+                            <i class="fas fa-plus"></i> Register Complaint
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        {% if complaints %}
+                            {% for complaint in complaints %}
+                            <div class="document-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="mb-0">{{ complaint.complaint_subject }}</h6>
+                                        <span class="badge bg-secondary">{{ complaint.complaint_type }}</span>
+                                        <span class="badge bg-warning text-dark ms-1">{{ complaint.priority|upper }}</span>
+                                    </div>
+                                    <span class="status-badge {% if complaint.status == 'resolved' %}status-verified{% else %}status-pending{% endif %}">
+                                        {{ complaint.status|title }}
+                                    </span>
+                                </div>
+                                <p class="text-muted mb-2">{{ complaint.complaint_description }}</p>
+                                {% if complaint.admin_response %}
+                                <div class="alert alert-info mt-2">
+                                    <strong>Admin Response:</strong> {{ complaint.admin_response }}
+                                </div>
+                                {% endif %}
+                                <small class="text-muted">Registered on {{ complaint.created_at|date:"d M Y, h:i A" }}</small>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-exclamation-triangle fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No complaints registered</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals (same as before) -->
+<!-- Upload Document Modal -->
+<div class="modal fade" id="uploadDocumentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Upload Document</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'professional_counselling_experts' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Document Type</label>
+                        <input type="text" name="document_type" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Upload File</label>
+                        <input type="file" name="document_file" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="upload_document" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Choice Modal -->
+<div class="modal fade" id="addChoiceModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Add College Choice</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'professional_counselling_experts' %}">  
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">College Name</label>
+                        <input type="text" name="college_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Course Name</label>
+                        <input type="text" name="course_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Preference Number</label>
+                        <input type="number" name="preference_number" class="form-control" min="1" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="add_choice" class="btn btn-success">Add Choice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Doubt Modal -->
+<div class="modal fade" id="submitDoubtModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Submit Your Doubt</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'professional_counselling_experts' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" name="subject" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Doubt Description</label>
+                        <textarea name="doubt_description" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="submit_doubt" class="btn btn-warning">Submit Doubt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Complaint Modal -->
+<div class="modal fade" id="submitComplaintModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Register Complaint</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <form method="post" action="{% url 'professional_counselling_experts' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Complaint Type</label>
+                        <input type="text" name="complaint_type" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" name="complaint_subject" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="complaint_description" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Priority</label>
+                        <select name="priority" class="form-control" required>
+                            <option value="low">Low</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="submit_complaint" class="btn btn-danger">Submit Complaint</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Update active link
+                document.querySelectorAll('.sidebar-dashboard .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+</script>
+{% endblock %}

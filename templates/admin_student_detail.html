@@ -1,0 +1,470 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }} - Student Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .student-profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .section-header {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .document-item, .choice-item, .doubt-item, .complaint-item {
+            background: #f8f9fc;
+            border-radius: 0.35rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid #e3e6f0;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            position: sticky;
+            top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Student Profile Header -->
+        <div class="student-profile-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white rounded-circle me-3" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                            <h1 class="text-primary mb-0">{{ student.name|first|upper }}</h1>
+                        </div>
+                        <div>
+                            <h2 class="mb-1">{{ student.name }}</h2>
+                            <p class="mb-0"><i class="fas fa-envelope me-2"></i>{{ student.email }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{% url 'admin_students_list' %}" class="btn btn-light">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Students
+                    </a>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-light ms-2">
+                        <i class="fas fa-home me-2"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column - Student Info -->
+            <div class="col-lg-4">
+                <!-- Basic Information -->
+                <div class="info-card">
+                    <h5 class="section-header">Basic Information</h5>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-user text-primary me-2"></i>Full Name:</strong>
+                        <p class="mb-0">{{ student.name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-user-tie text-info me-2"></i>Father's Name:</strong>
+                        <p class="mb-0">{{ student.father_name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-envelope text-danger me-2"></i>Email:</strong>
+                        <p class="mb-0">{{ student.email }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-phone text-success me-2"></i>Mobile:</strong>
+                        <p class="mb-0">{{ student.mobile }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fab fa-whatsapp text-success me-2"></i>WhatsApp:</strong>
+                        <p class="mb-0">{{ student.whatsapp_mobile }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-graduation-cap text-warning me-2"></i>Course:</strong>
+                        <p class="mb-0">{{ student.course }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Location:</strong>
+                        <p class="mb-0">{{ student.city }}, {{ student.state }}</p>
+                    </div>
+                    <div>
+                        <strong><i class="far fa-calendar-alt text-info me-2"></i>Registered On:</strong>
+                        <p class="mb-0">{{ student.created_at|date:"d M Y, h:i A" }}</p>
+                    </div>
+                </div>
+
+                <!-- Application Status -->
+                {% if status %}
+                <div class="info-card">
+                    <h5 class="section-header">Application Status</h5>
+                    <div class="mb-3">
+                        <strong>Current Stage:</strong>
+                        <p class="text-primary h6">{{ status.current_stage }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" {% if status.application_submitted %}checked disabled{% endif %}>
+                            <label class="form-check-label">Application Submitted</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" {% if status.documents_verified %}checked disabled{% endif %}>
+                            <label class="form-check-label">Documents Verified</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" {% if status.choice_filling_completed %}checked disabled{% endif %}>
+                            <label class="form-check-label">Choice Filling Completed</label>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Seat Allotment:</strong>
+                        <p class="mb-0"><span class="badge bg-warning">{{ status.seat_allotment_status }}</span></p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column - Documents, Choices, Doubts, Complaints -->
+            <div class="col-lg-8">
+                <!-- Documents Section -->
+                <div class="info-card">
+                    <h5 class="section-header"><i class="fas fa-file-alt me-2"></i>Uploaded Documents</h5>
+                    {% if documents %}
+                        {% for doc in documents %}
+                        <div class="document-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <h6 class="mb-0"><i class="fas fa-file-pdf text-danger me-2"></i>{{ doc.document_type }}</h6>
+                                    <small class="text-muted">Uploaded: {{ doc.uploaded_at|date:"d M Y" }}</small>
+                                </div>
+                                <div class="col-md-3">
+                                    {% if doc.status == 'verified' %}
+                                    <span class="status-badge bg-success text-white">Verified</span>
+                                    {% elif doc.status == 'rejected' %}
+                                    <span class="status-badge bg-danger text-white">Rejected</span>
+                                    {% else %}
+                                    <span class="status-badge bg-warning text-dark">Pending</span>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <a href="{{ doc.document_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    {% if doc.status == 'pending' %}
+                                    <form method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="document_id" value="{{ doc.id }}">
+                                        <button type="submit" name="verify_document" class="btn btn-sm btn-success me-1">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button type="submit" name="reject_document" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No documents uploaded yet</p>
+                    {% endif %}
+                </div>
+
+                <!-- College Choices -->
+                <div class="info-card">
+                    <h5 class="section-header"><i class="fas fa-list-ol me-2"></i>College Preferences</h5>
+                    {% if choices %}
+                        {% for choice in choices %}
+                        <div class="choice-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-1">
+                                    <span class="badge bg-primary">{{ choice.preference_number }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-0">{{ choice.college_name }}</h6>
+                                    <small class="text-muted">{{ choice.course_name }}</small>
+                                </div>
+                                <div class="col-md-5 text-end">
+                                    <small class="text-muted">Added: {{ choice.created_at|date:"d M Y" }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No college preferences added yet</p>
+                    {% endif %}
+                </div>
+
+                <!-- Doubts Section -->
+                <div class="info-card">
+                    <h5 class="section-header"><i class="fas fa-question-circle me-2"></i>Student Doubts</h5>
+                    {% if doubts %}
+                        {% for doubt in doubts %}
+                        <div class="doubt-item">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">{{ doubt.subject }}</h6>
+                                {% if doubt.status == 'resolved' %}
+                                <span class="status-badge bg-success text-white">Resolved</span>
+                                {% else %}
+                                <span class="status-badge bg-warning text-dark">Pending</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-muted mb-2">{{ doubt.doubt_description }}</p>
+                            <small class="text-muted">Asked: {{ doubt.created_at|date:"d M Y, h:i A" }}</small>
+                            
+                            {% if doubt.response %}
+                            <div class="alert alert-success mt-2 mb-0">
+                                <strong>Your Response:</strong> {{ doubt.response }}
+                            </div>
+                            {% else %}
+                            <form method="post" class="mt-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="doubt_id" value="{{ doubt.id }}">
+                                <div class="mb-2">
+                                    <textarea name="response" class="form-control" rows="3" placeholder="Write your response..." required></textarea>
+                                </div>
+                                <button type="submit" name="respond_doubt" class="btn btn-sm btn-success">
+                                    <i class="fas fa-paper-plane me-1"></i>Send Response
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No doubts submitted</p>
+                    {% endif %}
+                </div>
+
+                <!-- Complaints Section -->
+                <div class="info-card">
+                    <h5 class="section-header"><i class="fas fa-exclamation-triangle me-2"></i>Complaints</h5>
+                    {% if complaints %}
+                        {% for complaint in complaints %}
+                        <div class="complaint-item">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-0">{{ complaint.complaint_subject }}</h6>
+                                    <span class="badge bg-secondary me-1">{{ complaint.complaint_type }}</span>
+                                    <span class="badge bg-warning text-dark">{{ complaint.priority|upper }}</span>
+                                </div>
+                                {% if complaint.status == 'resolved' %}
+                                <span class="status-badge bg-success text-white">Resolved</span>
+                                {% else %}
+                                <span class="status-badge bg-danger text-white">Open</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-muted mb-2">{{ complaint.complaint_description }}</p>
+                            <small class="text-muted">Registered: {{ complaint.created_at|date:"d M Y, h:i A" }}</small>
+                            
+                            {% if complaint.admin_response %}
+                            <div class="alert alert-info mt-2 mb-0">
+                                <strong>Your Response:</strong> {{ complaint.admin_response }}
+                            </div>
+                            {% else %}
+                            <form method="post" class="mt-3">
+                                {% csrf_token %}
+                                <input type="hidden" name="complaint_id" value="{{ complaint.id }}">
+                                <div class="mb-2">
+                                    <textarea name="admin_response" class="form-control" rows="3" placeholder="Write your response..." required></textarea>
+                                </div>
+                                <button type="submit" name="respond_complaint" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-paper-plane me-1"></i>Resolve Complaint
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center py-3">No complaints registered</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Seat Allotment Section - Admin Student Detail page mein add karo -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-chair me-2"></i>Seat Allotment Management</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><strong>Current Allotment Status:</strong></label>
+                    <p class="h5 text-primary">{{ status.seat_allotment_status }}</p>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><strong>Update Allotment Status:</strong></label>
+                    <select name="seat_allotment_status" class="form-control" required>
+                        <option value="Pending" {% if status.seat_allotment_status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Seat Allotted" {% if status.seat_allotment_status == 'Seat Allotted' %}selected{% endif %}>Seat Allotted</option>
+                        <option value="Waitlisted" {% if status.seat_allotment_status == 'Waitlisted' %}selected{% endif %}>Waitlisted</option>
+                        <option value="Not Allotted" {% if status.seat_allotment_status == 'Not Allotted' %}selected{% endif %}>Not Allotted</option>
+                        <option value="Admission Confirmed" {% if status.seat_allotment_status == 'Admission Confirmed' %}selected{% endif %}>Admission Confirmed</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><strong>Allotted College (if applicable):</strong></label>
+                    <input type="text" name="allotted_college" class="form-control" 
+                           placeholder="Enter college name" 
+                           value="{{ status.allotted_college|default:'' }}">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><strong>Allotted Course (if applicable):</strong></label>
+                    <input type="text" name="allotted_course" class="form-control" 
+                           placeholder="Enter course name"
+                           value="{{ status.allotted_course|default:'' }}">
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label"><strong>Remarks/Notes:</strong></label>
+                    <textarea name="allotment_remarks" class="form-control" rows="3" 
+                              placeholder="Add any remarks about the allotment">{{ status.allotment_remarks|default:'' }}</textarea>
+                </div>
+
+                <div class="col-md-12">
+                    <button type="submit" name="update_seat_allotment" class="btn btn-success btn-lg">
+                        <i class="fas fa-save me-2"></i>Update Seat Allotment
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Application Status Update Section -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Update Application Status</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <!-- Current Status Display -->
+                <div class="col-md-12 mb-3">
+                    <h6>Current Status:</h6>
+                    <p class="h5 text-primary">{{ status.current_stage }}</p>
+                </div>
+
+                <!-- Application Submitted Checkbox -->
+                <div class="col-md-4 mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="application_submitted" 
+                               id="application_submitted" {% if status.application_submitted %}checked{% endif %}>
+                        <label class="form-check-label" for="application_submitted">
+                            <strong>Application Submitted</strong>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Documents Verified Checkbox -->
+                <div class="col-md-4 mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="documents_verified" 
+                               id="documents_verified" {% if status.documents_verified %}checked{% endif %}>
+                        <label class="form-check-label" for="documents_verified">
+                            <strong>Documents Verified</strong>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Choice Filling Completed Checkbox -->
+                <div class="col-md-4 mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="choice_filling_completed" 
+                               id="choice_filling_completed" {% if status.choice_filling_completed %}checked{% endif %}>
+                        <label class="form-check-label" for="choice_filling_completed">
+                            <strong>Choice Filling Completed</strong>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Current Stage Dropdown -->
+                <div class="col-md-12 mb-3">
+                    <label class="form-label"><strong>Update Current Stage:</strong></label>
+                    <select name="current_stage" class="form-control" required>
+                        <option value="Registration Completed" {% if status.current_stage == 'Registration Completed' %}selected{% endif %}>Registration Completed</option>
+                        <option value="Application Submitted" {% if status.current_stage == 'Application Submitted' %}selected{% endif %}>Application Submitted</option>
+                        <option value="Document Verification Pending" {% if status.current_stage == 'Document Verification Pending' %}selected{% endif %}>Document Verification Pending</option>
+                        <option value="Documents Verified" {% if status.current_stage == 'Documents Verified' %}selected{% endif %}>Documents Verified</option>
+                        <option value="Choice Filling In Progress" {% if status.current_stage == 'Choice Filling In Progress' %}selected{% endif %}>Choice Filling In Progress</option>
+                        <option value="Choice Filling Completed" {% if status.current_stage == 'Choice Filling Completed' %}selected{% endif %}>Choice Filling Completed</option>
+                        <option value="Waiting for Counselling Round" {% if status.current_stage == 'Waiting for Counselling Round' %}selected{% endif %}>Waiting for Counselling Round</option>
+                        <option value="Counselling Round 1" {% if status.current_stage == 'Counselling Round 1' %}selected{% endif %}>Counselling Round 1</option>
+                        <option value="Counselling Round 2" {% if status.current_stage == 'Counselling Round 2' %}selected{% endif %}>Counselling Round 2</option>
+                        <option value="Seat Allotted - Pending Admission" {% if status.current_stage == 'Seat Allotted - Pending Admission' %}selected{% endif %}>Seat Allotted - Pending Admission</option>
+                        <option value="Admission Confirmed" {% if status.current_stage == 'Admission Confirmed' %}selected{% endif %}>Admission Confirmed</option>
+                        <option value="Admission Process Completed" {% if status.current_stage == 'Admission Process Completed' %}selected{% endif %}>Admission Process Completed</option>
+                    </select>
+                </div>
+
+                <!-- Update Button -->
+                <div class="col-md-12">
+                    <button type="submit" name="update_application_status" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Update Application Status
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-hide alerts
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                if (!alert.classList.contains('alert-success') && !alert.classList.contains('alert-info')) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
