@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Discover Categories - Career4s{% endblock %}
+{% block title %}LearnUp - Discover Categories{% endblock %}
+
+{% block content %}
 
 {% block extra_css %}
 <style>
@@ -9,9 +11,13 @@
         overflow-x: hidden;
     }
     
-    .dashboard-hero {
-        background: #ED651C;
-        background: linear-gradient(135deg, #ED651C, #F4800C);
+    .services-hero {
+       /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=ed651c&c2=f4800c&gt=l&gd=dtl
+*/
+background: #ED651C;
+background: linear-gradient(135deg, #ED651C, #F4800C);
         padding: 100px 0;
         position: relative;
         min-height: 60vh;
@@ -19,21 +25,27 @@
         align-items: center;
     }
     
-    .dashboard-hero::before {
+    .services-hero::before {
         content: '';
         position: absolute;
-        top: 263px;
+        top:160px;
         right: -126px;
         width: 438px;
         height: 393px;
-        background: #DDA25B;
-        background: linear-gradient(135deg, #DDA25B, #EA8405);
-        background-image: url("{% static 'img/main_img.png' %}");
-        background-size: contain;
-        background-repeat: no-repeat;
+        /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=dda25b&c2=ea8405&gt=l&gd=dtl
+*/
+background: #DDA25B;
+background: linear-gradient(135deg, #DDA25B, #EA8405);
+ background-image: url("{% static 'img/main_img.png' %}");
+ /* border: 5px solid #000; */
+ background-size: contain;
+ background-repeat: no-repeat;
+        /* border-radius: 50%; */
     }
     
-    .dashboard-hero::after {
+    .services-hero::after {
         content: '';
         position: absolute;
         bottom: -100px;
@@ -56,7 +68,7 @@
         filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
     }
     
-    .dashboard-hero h1 {
+    .services-hero h1 {
         color: #fff;
         font-size: 2.8rem;
         font-weight: 700;
@@ -64,19 +76,19 @@
         text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     
-    .dashboard-hero p {
+    .services-hero p {
         color: rgba(255,255,255,0.9);
         font-size: 1.1rem;
         margin-bottom: 0;
     }
     
-    .dashboard-section {
+    .services-section {
         padding: 80px 0;
         background: #f8f9fa;
         position: relative;
     }
     
-    .dashboard-card {
+    .service-card {
         background: #fff;
         border-radius: 15px;
         padding: 40px 25px;
@@ -86,39 +98,30 @@
         height: 100%;
         border-top: 4px solid transparent;
         margin-bottom: 30px;
-        cursor: pointer;
-        text-decoration: none;
-        display: block;
-        min-height: 320px;
     }
     
-    .dashboard-card:nth-child(3n+1) { border-top-color: #f39c12; }
-    .dashboard-card:nth-child(3n+2) { border-top-color: #e74c3c; }
-    .dashboard-card:nth-child(3n+3) { border-top-color: #2ecc71; }
+    .service-card:nth-child(1) { border-top-color: #f39c12; }
+    .service-card:nth-child(2) { border-top-color: #e74c3c; }
+    .service-card:nth-child(3) { border-top-color: #f39c12; }
+    .service-card:nth-child(4) { border-top-color: #2ecc71; }
     
-    .dashboard-card:hover {
+    .service-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 40px rgba(0,0,0,0.15);
     }
     
-    .card-icon {
+    .service-icon {
         width: 100px;
         height: 100px;
         margin: 0 auto 20px;
         transition: transform 0.3s ease;
     }
     
-    .card-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-    
-    .dashboard-card:hover .card-icon {
+    .service-card:hover .service-icon {
         transform: scale(1.05);
     }
     
-    .dashboard-card h4 {
+    .service-card h4 {
         font-size: 1.4rem;
         font-weight: 700;
         color: #2c3e50;
@@ -126,385 +129,441 @@
         line-height: 1.4;
     }
     
-    .dashboard-card p {
+    .service-card p {
         color: #7f8c8d;
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 0;
     }
     
-    .category-number {
-        display: inline-block;
-        background: linear-gradient(135deg, #ED651C, #F4800C);
-        color: white;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        line-height: 35px;
-        text-align: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-    }
-    
-    /* Better spacing between cards */
-    .row.g-4 {
-        --bs-gutter-x: 1.5rem;
-        --bs-gutter-y: 2rem;
-    }
-    
     @media (max-width: 991px) {
-        .dashboard-hero h1 {
+        .services-hero h1 {
             font-size: 2.2rem;
         }
         
-        .dashboard-section {
+        .services-section {
             padding: 60px 0;
-        }
-        
-        .row.g-4 {
-            --bs-gutter-y: 1.5rem;
         }
     }
     
     @media (max-width: 767px) {
-        .dashboard-hero {
+        .services-hero {
             padding: 80px 0;
             min-height: 50vh;
         }
         
-        .dashboard-hero h1 {
+        .services-hero h1 {
             font-size: 1.8rem;
         }
         
-        .dashboard-hero p {
+        .services-hero p {
             font-size: 1rem;
         }
         
-        .dashboard-card {
+        .service-card {
             margin-bottom: 25px;
-            min-height: 280px;
-        }
-        
-        .dashboard-hero::before {
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            top: 200px;
         }
     }
 </style>
 {% endblock %}
 
-{% block content %}
-<!-- Dashboard Hero Section -->
-<section class="dashboard-hero">
+<!-- Services Hero Section -->
+<section class="services-hero">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 text-center hero-content">
                 <div class="hero-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff">
-                        <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="#3498db">
+                        <path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>
                     </svg>
                 </div>
-                <h1>Discover Categories</h1>
-                <p>Browse a Wide Range of Subjects to Start Learning What You Love</p>
+                <h1>All India State Wise Counselling</h1>
+                <p>Expert Guidance for Your Educational Journey</p>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Dashboard Cards Section -->
-<section class="dashboard-section">
-    <div class="container">
-        <div class="row g-4 justify-content-center">
-            <!-- Card 1 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">1</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/content.png' %}" alt="College Comparison" class="img-fluid">
-                    </div>
-                    <h4>College Comparison</h4>
-                </a>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">2</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="RTI" class="img-fluid">
-                    </div>
-                    <h4>RTI</h4>
-                </a>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">3</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/career.png' %}" alt="Placements" class="img-fluid">
-                    </div>
-                    <h4>Placements</h4>
-                </a>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">4</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/python.png' %}" alt="State Wise Counselling" class="img-fluid">
-                    </div>
-                    <h4>State Wise Counselling Updates</h4>
-                </a>
-            </div>
-
-            <!-- Card 5 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">5</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/designer.png' %}" alt="Scholarships" class="img-fluid">
-                    </div>
-                    <h4>Scholarships</h4>
-                </a>
-            </div>
-
-            <!-- Card 6 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">6</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/speaker.png' %}" alt="Documentation" class="img-fluid">
-                    </div>
-                    <h4>Documentation According to State Wise Counselling</h4>
-                </a>
-            </div>
-
-            <!-- Card 7 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">7</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/photo.png' %}" alt="Registration Guidance" class="img-fluid">
-                    </div>
-                    <h4>Registration Guidance</h4>
-                </a>
-            </div>
-
-            <!-- Card 8 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">8</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/yoga.png' %}" alt="Cut Offs" class="img-fluid">
-                    </div>
-                    <h4>Cut Offs</h4>
-                </a>
-            </div>
-
-            <!-- Card 9 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">9</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/health.png' %}" alt="New Education Policy" class="img-fluid">
-                    </div>
-                    <h4>New Education Policy</h4>
-                </a>
-            </div>
-
-            <!-- Card 10 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">10</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/content.png' %}" alt="Course Selection" class="img-fluid">
-                    </div>
-                    <h4>Course and Stream Selection Guidance</h4>
-                </a>
-            </div>
-
-            <!-- Card 11 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">11</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Seat Matrix" class="img-fluid">
-                    </div>
-                    <h4>Seat Matrix India</h4>
-                </a>
-            </div>
-
-            <!-- Card 12 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">12</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/career.png' %}" alt="Skill Based Courses" class="img-fluid">
-                    </div>
-                    <h4>Skill Based Courses</h4>
-                </a>
-            </div>
-
-            <!-- Card 13 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">13</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/python.png' %}" alt="YouTube Videos" class="img-fluid">
-                    </div>
-                    <h4>YouTube Videos</h4>
-                </a>
-            </div>
-
-            <!-- Card 14 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">14</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/designer.png' %}" alt="Interviews" class="img-fluid">
-                    </div>
-                    <h4>Interviews</h4>
-                </a>
-            </div>
-
-            <!-- Card 15 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">15</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Campus Tours" class="img-fluid">
-                    </div>
-                    <h4>Campus Tours</h4>
-                </a>
-            </div>
-
-            <!-- Card 16 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">16</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Professional Counselling" class="img-fluid">
-                    </div>
-                    <h4>What is Professional Counselling</h4>
-                </a>
-            </div>
-
-            <!-- Card 17 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">17</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Top Colleges" class="img-fluid">
-                    </div>
-                    <h4>Top Colleges Info State Wise</h4>
-                </a>
-            </div>
-
-            <!-- Card 18 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">18</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Fraud Alert" class="img-fluid">
-                    </div>
-                    <h4>False Promise and Fraud Alert</h4>
-                </a>
-            </div>
-
-            <!-- Card 19 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">19</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="NIRF Ranking" class="img-fluid">
-                    </div>
-                    <h4>NIRF Ranking 2025</h4>
-                </a>
-            </div>
-
-            <!-- Card 20 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">20</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="B.Tech Counsellings" class="img-fluid">
-                    </div>
-                    <h4>All B.Tech Counsellings in India</h4>
-                </a>
-            </div>
-
-            <!-- Card 21 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">21</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Training Session" class="img-fluid">
-                    </div>
-                    <h4>Training Session for Students</h4>
-                </a>
-            </div>
-
-            <!-- Card 22 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">22</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Student Reviews" class="img-fluid">
-                    </div>
-                    <h4>Pure Reviews by Students</h4>
-                </a>
-            </div>
-
-            <!-- Card 23 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">23</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Complaint Desk" class="img-fluid">
-                    </div>
-                    <h4>Career4s Complaint Desk</h4>
-                </a>
-            </div>
-
-            <!-- Card 24 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">24</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Doubts Desk" class="img-fluid">
-                    </div>
-                    <h4>Doubts Desk</h4>
-                </a>
-            </div>
-
-            <!-- Card 25 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">25</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Entrance Exams" class="img-fluid">
-                    </div>
-                    <h4>All India B.Tech Entrance Exams</h4>
-                </a>
-            </div>
-
-            <!-- Card 26 -->
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <a href="#" class="dashboard-card">
-                    <div class="category-number">26</div>
-                    <div class="card-icon">
-                        <img src="{% static 'img/briefcase.png' %}" alt="Campus Videos" class="img-fluid">
-                    </div>
-                    <h4>Campus Videos</h4>
-                </a>
-            </div>
-
-        </div>
-    </div>
+<!-- ========================== Featured Category Section =============================== -->
+<section>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-lg-8 col-md-10 col-sm-12">
+				<div class="sec-heading center">
+					<h2>Discover Categories</h2>
+					<p>Browse a Wide Range of Subjects to Start Learning What You Love</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row justify-content-center g-4">
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-1">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/content.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">1. COLLEGE COMPERISSION</a></h4>
+						<ul class="meta">
+							<!--<li class="video"><i class="ti-video-clapper"></i>23 Classes</li>-->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-2">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">2. RTI</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>58 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-3">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/career.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">3. PLACEMENTS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>74 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-4">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/python.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">4. STATE WISE COUNSELLING UPDATES</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>65 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-10">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/designer.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">5. SCHOOLERSHIPS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-6">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/speaker.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">6. DOCUMENTATION ACCORDING TO STATE WISE COUNSELLING</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>82 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-7">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/photo.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">7. REGISTRATION GUIDANCE</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>25 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-8">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/yoga.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">8. CUTT OFFS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-9">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/health.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">9. NEW EDUCATION POLICY</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>38 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-1">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/content.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">10. COURSE AND STREAM SELECTION GUIDANCE</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>23 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-2">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">11. SEAT MATRIX INDIA</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>58 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-3">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/career.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">12. SKILL BASED COURSES</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>74 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-4">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/python.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">13. YOU TUBE VIDEOS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>65 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-10">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/designer.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">14. INTERVIEWS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-6">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">15. CAMPUS TOURS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>82 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-7">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">16. WHAT IS PROFESSIONAL COUNSELLING</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>25 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-8">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">17. TOP COLLEGES INFO STATE WISE</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-9">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">18. FALSE PROMISE AND FRAUD ALERT</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>38 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-1">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">19. NIRF RANKING 2025</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>23 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-2">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">20. ALL B.TECH COUNSELLINGS IN INDIA</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>58 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-3">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">21. TRAINING SESSION FOR STUDENTS </a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>74 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-4">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">22. PURE REVIEWS BY STUDENTS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>65 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-10">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">23. CAREER4S COMPLAINT DESK</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-6">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">24. DOUBTS DESK</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>82 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-7">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">25. ALL INDIA BTECH ENTERANCE EXAMS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>25 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="edu_cat_2 cat-8">
+					<div class="edu_cat_icons">
+						<a class="pic-main" href="#"><img src="{% static 'img/briefcase.png' %}" class="img-fluid" alt="" /></a>
+					</div>
+					<div class="edu_cat_data">
+						<h4 class="title"><a href="#">26. CAMPUS VIDEOS</a></h4>
+						<ul class="meta">
+							<!-- <li class="video"><i class="ti-video-clapper"></i>43 Classes</li> -->
+						</ul>
+					</div>
+				</div>							
+			</div>
+			
+		</div>
+		
+	</div>
 </section>
+<!-- ========================== Featured Category Section End =============================== -->
 {% endblock %}
