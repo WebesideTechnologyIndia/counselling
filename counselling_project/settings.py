@@ -25,8 +25,24 @@ SECRET_KEY = 'django-insecure-i496jvbl9^v-s*v9gqbz+=)^137bpvkjv^%3_5%xxv^r_*34#i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS
+ALLOWED_HOSTS = ['c4s.webesidetechnology.com', 'localhost', '127.0.0.1']
 
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://c4s.webesidetechnology.com',
+    'http://c4s.webesidetechnology.com',
+]
+
+# Security Settings (production ke liye)
+SECURE_SSL_REDIRECT =False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Debug False kar do production mein (optional - abhi True rakho testing ke liye)
+DEBUG = True  # Baad mein False karna
 
 # Application definition
 
@@ -133,7 +149,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'assets',  # Sirf yahi ek line
 ]
 
-# Templates configuration  
+# Templates configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
